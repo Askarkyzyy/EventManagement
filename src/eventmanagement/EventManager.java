@@ -1,8 +1,16 @@
 package eventmanagement;
+
 import java.util.ArrayList;
+
 public class EventManager {
     private ArrayList<Event> events;
-    private ArrayList<Participiant> participants;
+    private ArrayList<Participant> participants;
+
+    // Constructor
+    public EventManager() {
+        events = new ArrayList<>();
+        participants = new ArrayList<>();
+    }
 
     // Add a new event
     public void addEvent(Event event) {
@@ -10,7 +18,26 @@ public class EventManager {
     }
 
     // Add a new participant
-    public void addParticipant(Participiant participant) {
+    public void addParticipant(Participant participant) {
         participants.add(participant);
+    }
+
+    // Display all events
+    public void showEvents() {
+        for (Event e : events) {
+            System.out.println("ID: " + e.getId() +
+                    ", Name: " + e.getName() +
+                    ", Date: " + e.getDate() +
+                    ", Location: " + e.getLocation());
+        }
+    }
+
+    // Display all participants
+    public void showParticipants() {
+        for (Participant p : participants) {
+            System.out.println("ID: " + p.getId() +
+                    ", Name: " + p.getName() +
+                    ", Email: " + p.getEmail());
+        }
     }
 }

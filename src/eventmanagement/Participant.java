@@ -1,13 +1,14 @@
 package eventmanagement;
 
-public class Participiant {
+public class Participant {
     private int id;
     private String name;
     private String email;
 
     // Constructor
-    public Participiant(int id, String name, String email) {
-        if(id > 0) this.id = id; else this.id = 1;
+    public Participant(int id, String name, String email) {
+        if(id > 0) this.id = id;
+        else this.id = 1;
         this.name = name;
         this.email = email;
     }
@@ -22,4 +23,3 @@ public class Participiant {
     public String getEmail() { return email; }
     public void setEmail(String email) { this.email = email; }
 }
-
