@@ -1,28 +1,33 @@
 package eventmanagement;
 
+import java.util.Scanner;
+
 public class Main {
     public static void main(String[] args) {
+
+        Scanner scanner = new Scanner(System.in);
         EventManager manager = new EventManager();
 
-        // Create events
-        Event event1 = new Event(1, "Music Party", "2025-12-31", "Astana");
-        Event event2 = new Event(2, "Sports Tournament", "2025-05-10", "Almaty");
+        System.out.print("Enter event name: ");
+        String eventName = scanner.nextLine();
 
-        // Create participants
-        Participant participant1 = new Participant(1, "Tomiris", "tom@example.com");
-        Participant participant2 = new Participant(2, "Alina", "alina@example.com");
+        Event event = new Event(1, eventName, "2025-12-31", "Astana");
+        manager.addEvent(event);
 
-        // Add events and participants to manager
-        manager.addEvent(event1);
-        manager.addEvent(event2);
-        manager.addParticipant(participant1);
-        manager.addParticipant(participant2);
+        Person p1 = new Participant(1, "Tomiris", "tom@example.com");
+        Person p2 = new Participant(2, "Alina", "alina@example.com");
 
-        // Display all events and participants
-        System.out.println("All Events:");
+        event.addParticipant((Participant) p1);
+        event.addParticipant((Participant) p2);
+
+        manager.sortEventsByName();
+
+        System.out.println("\n=== Events ===");
         manager.showEvents();
 
-        System.out.println("\nAll Participants:");
-        manager.showParticipants();
+        System.out.println("\nPolymorphism test:");
+        System.out.println(p1.getRole());
+
+        scanner.close();
     }
 }
