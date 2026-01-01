@@ -1,7 +1,7 @@
 package eventmanagement;
 
 import java.util.ArrayList;
-
+import java.util.Comparator;
 public class EventManager {
     private ArrayList<Event> events;
     private ArrayList<Participant> participants;
@@ -33,11 +33,25 @@ public class EventManager {
     }
 
     // Display all participants
-    public void showParticipants() {
-        for (Participant p : participants) {
+    public void showParticipant(){
+        for (Participant p : participants){
             System.out.println("ID: " + p.getId() +
                     ", Name: " + p.getName() +
-                    ", Email: " + p.getEmail());
+                    ",  Email: " + p.getEmail());
         }
     }
+    public Event findEventByName(String name) {
+        for (Event e : events) {
+            if (e.getName().equalsIgnoreCase(name)) {
+                return e;
+            }
+        }
+        return null;
+    }
+
+
+    public void sortEventsByName() {
+        events.sort(Comparator.comparing(Event::getName));
+    }
+
 }
