@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Event Management Dashboard</title>
+    <style>
+        body { font-family: Arial; background: #f0f2f5; padding: 20px; }
+        h1, h2 { text-align: center; color: #333; }
+        .controls { text-align: center; margin-bottom: 15px; }
+        input[type="text"] { padding: 5px; width: 220px; }
+        button { padding: 6px 12px; margin-left: 5px; background-color: #e91e63; color: white; border: none; cursor: pointer; border-radius: 4px; }
+        button:hover { background-color: #d81b60; }
+        table { width: 80%; margin: 0 auto 40px auto; border-collapse: collapse; background: white; box-shadow: 0 2px 5px rgba(0,0,0,0.1);}
+        th, td { padding: 12px; text-align: center; border-bottom: 1px solid #ddd; }
+        th { background-color: #e91e63; color: white; }
+        tr:hover {background-color: #f1f1f1;}
+    </style>
+</head>
+<body>
+
+<h1>Event Management Dashboard</h1>
+
+<!-- Events -->
+<h2>Events</h2>
+<div class="controls">
+    <input type="text" id="search-event" placeholder="Search events by name, location, or description">
+    <button onclick="loadFilteredEvents()">Search</button>
+    <button onclick="loadEvents()">Load All Events</button>
+</div>
+<table>
+    <thead>
+    <tr>
+        <th>Name</th>
+        <th>Date</th>
+        <th>Location</th>
+        <th>Description</th>
+    </tr>
+    </thead>
+    <tbody id="events-table"></tbody>
+</table>
+
+<!-- Participants -->
+<h2>Participants</h2>
+<div class="controls">
+    <input type="text" id="search-participant" placeholder="Search participants by name, email, or event ID">
+    <button onclick="loadFilteredParticipants()">Search</button>
+    <button onclick="loadParticipants()">Load All Participants</button>
+</div>
+<table>
+    <thead>
+    <tr>
+        <th>Name</th>
+        <th>Email</th>
+        <th>Event ID</th>
+    </tr>
+    </thead>
+    <tbody id="participants-table"></tbody>
+</table>
+
+<script>
+    // Events
+    function loadEvents() {
+        fetch("/events")
+            .then(response => response.json())
+            .then(data => renderEvents(data));
+    }
+
+    function loadFilteredEvents() {
+        const keyword = document.getElementById("search-event").value.toLowerCase();
+        fetch("/events")
+            .then(response => response.json())
+            .then(data => {
+                const filtered = data.filter(e =>
+                    e.name.toLowerCase().includes(keyword) ||
+                    e.location.toLowerCase().includes(keyword) ||
+                    e.description.toLowerCase().includes(keyword)
+                );
+                renderEvents(filtered);
+            });
+    }
+
+    function renderEvents(events) {
+        const table = document.getElementById("events-table");
+        table.innerHTML = "";
+        events.forEach(e => {
+            const row = document.createElement("tr");
+            row.innerHTML = `
+                <td>${e.name}</td>
+                <td>${e.date}</td>
+                <td>${e.location}</td>
+                <td>${e.description}</td>
+            `;
+            table.appendChild(row);
+        });
+    }
+
+    // Participants
+    function loadParticipants() {
+        fetch("/participants")
+            .then(response => response.json())
+            .then(data => renderParticipants(data));
+    }
+
+    function loadFilteredParticipants() {
+        const keyword = document.getElementById("search-participant").value.toLowerCase();
+        fetch("/participants")
+            .then(response => response.json())
+            .then(data => {
+                const filtered = data.filter(p =>
+                    p.name.toLowerCase().includes(keyword) ||
+                    (p.email && p.email.toLowerCase().includes(keyword)) ||
+                    p.eventId.toString().includes(keyword)
+                );
+                renderParticipants(filtered);
+            });
+    }
+
+    function renderParticipants(participants) {
+        const table = document.getElementById("participants-table");
+        table.innerHTML = "";
+        participants.forEach(p => {
+            const row = document.createElement("tr");
+            row.innerHTML = `
+                <td>${p.name}</td>
+                <td>${p.email ? p.email : '-'}</td>
+                <td>${p.eventId}</td>
+            `;
+            table.appendChild(row);
+        });
+    }
+</script>
+
+</body>
+</html>
